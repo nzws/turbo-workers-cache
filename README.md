@@ -62,9 +62,11 @@ Revoking a user's session from the [ZT Dashboard](https://one.dash.cloudflare.co
 
 You can flexibly restrict access by setting [Access policies](https://developers.cloudflare.com/cloudflare-one/policies/access/).
 
+<!--
 ### Authenticate within the system such as CI/CD
 
 You can use a [service token](https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/) that is independent of the personal account.
+-->
 
 ## Related cool projects
 
