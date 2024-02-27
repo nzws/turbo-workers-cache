@@ -1,0 +1,32 @@
+{
+  "name": "turbo-workers-cache",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "ts-node --esm ./main.ts",
+    "format": "biome format --write .",
+    "lint": "eslint --ext .ts,.tsx,.js . && tsc --noEmit",
+    "workers:deploy": "wrangler deploy",
+    "workers:dev": "wrangler dev"
+  },
+  "dependencies": {
+    "elysia": "^0.8.17",
+    "jose": "5.2.2"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.5.3",
+    "@cloudflare/workers-types": "4.20240222.0",
+    "@tsconfig/strictest": "2.0.3",
+    "@types/eslint": "8.56.3",
+    "@types/node": "20.11.20",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
+    "@typescript-eslint/parser": "6.21.0",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-unicorn": "51.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "wrangler": "3.29.0"
+  },
+  "packageManager": "yarn@4.1.0"
+}

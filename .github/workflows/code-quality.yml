@@ -1,0 +1,23 @@
+name: Check code quality
+
+on:
+  - push
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_VERSION: 20
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'yarn'
+
+      - run: corepack enable
+      - run: yarn install --immutable
+      - run: yarn lint
