@@ -28,7 +28,9 @@ export const getIdentity = async (
   env: Env,
 ): Promise<undefined | CfIdentity> => {
   const url = `https://${env.ACCESS_TEAM_SLUG}.cloudflareaccess.com/cdn-cgi/access/get-identity`;
-  const response = await fetch(url, { headers: { Cookie: `CF_Authorization=${token}` } });
+  const response = await fetch(url, {
+    headers: { Cookie: `CF_Authorization=${token}` },
+  });
 
   if (response.ok) {
     return await response.json();
