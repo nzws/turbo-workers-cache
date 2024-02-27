@@ -12,12 +12,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - run: corepack enable yarn
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'yarn'
-
-      - run: corepack enable
       - run: yarn install --immutable
       - run: yarn lint
