@@ -43,9 +43,9 @@ ref: https://turbo.build/repo/docs/core-concepts/remote-caching#remote-caching-a
 
 ### Setup turborepo client
 
-1. Login to the custom cache server: `https://<custom domain>/login`
+1. Login to the custom cache server via the browser: `https://<custom domain>/login`
 2. Once logged in, copy the displayed `TURBO_TOKEN` and `TURBO_API`.
-3. When using Turborepo, the copied values are set as environment variables.
+3. Set the copied values as environment variables when using Turbo cli.
 4. Also, if you are sharing the cache with other users, set the team ID in the `TURBO_TEAM` environment variable. The team ID can be freely chosen, but it must start with `team_`.
 
 ## Tips
