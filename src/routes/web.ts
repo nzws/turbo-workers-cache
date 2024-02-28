@@ -17,7 +17,12 @@ export const webRoute = new Elysia({ aot: false }).guard(
           await verifyToken(token, env),
           await getIdentity(token, env),
         ]);
-        if (user && identity) {
+        if (user && user.email && identity) {
+          // personal account
+          return;
+        }
+        if (user && !user.email) {
+          // service token: do not access to identity api (??)
           return;
         }
       }
@@ -29,11 +34,11 @@ export const webRoute = new Elysia({ aot: false }).guard(
     }),
   },
   (app) =>
-    app.get("/login", ({ cookie: { CF_Authorization }, request }) => {
+    app.get("/login", ({ cookie: { CF_Authorization }, request, headers }) => {
       const url = new URL(request.url);
       const links = {
-        logoutUrl: `${url.origin}/cdn-cgi/access/logout`,
-        revokeUrl: "https://one.dash.cloudflare.com/<YOUR_TEAM_ID>/team/users",
+        logout: `${url.origin}/cdn-cgi/access/logout`,
+        revoke: "https://one.dash.cloudflare.com/?to=/:account/team/users",
       };
 
       if (!CF_Authorization.value) {
@@ -46,6 +51,10 @@ export const webRoute = new Elysia({ aot: false }).guard(
           null,
           2,
         );
+      }
+
+      if (headers["content-type"] === "text/plain") {
+        return CF_Authorization.value;
       }
 
       return JSON.stringify(

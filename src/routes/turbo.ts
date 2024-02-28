@@ -3,7 +3,7 @@ import type { Env } from "../lib/env";
 import { verifyToken } from "../lib/verify";
 import { getIdentity } from "../lib/identity";
 
-export const restApiRoute = new Elysia({ aot: false }).guard(
+export const turboRoute = new Elysia({ aot: false }).guard(
   {
     async beforeHandle({ store, set, headers: { authorization } }) {
       const env = (store as Record<string, unknown>)["env"] as Env;
@@ -17,7 +17,12 @@ export const restApiRoute = new Elysia({ aot: false }).guard(
           await verifyToken(token, env),
           await getIdentity(token, env),
         ]);
-        if (user && identity) {
+        if (user && user.email && identity) {
+          // personal account
+          return;
+        }
+        if (user && !user.email) {
+          // service token: do not access to identity api (??)
           return;
         }
       }
@@ -52,16 +57,21 @@ export const restApiRoute = new Elysia({ aot: false }).guard(
             return user?.sub;
           }
           const userId = await getUserId();
+          const isServiceToken = !userId;
 
           function getSlug() {
-            return teamId
-              ? `team-${teamId}`
-              : slug
-                ? `team-${slug}`
-                : `user-${userId}`;
+            if (teamId) {
+              return `team-${teamId}`;
+            } else if (slug) {
+              return `team-${slug}`;
+            } else if (userId) {
+              return `user-${userId}`;
+            } else {
+              return "unknown";
+            }
           }
 
-          return { userId, slug: getSlug() };
+          return { userId, isServiceToken, slug: getSlug() };
         },
       )
       .post("/v8/artifacts/events", ({ body }) => {

@@ -28,9 +28,9 @@ ref: https://turbo.build/repo/docs/core-concepts/remote-caching#remote-caching-a
 3. Create the Access policy - you have to setup Zero Trust in advance.
     1. Open [Add an application](https://one.dash.cloudflare.com/?to=/:account/access/apps/add) in ZT dashboard.
     2. Click `Self-hosted`.
-    3. Set the session duration to a maximum of `1 month`.
-    4. Set `<custom domain>/login` as the application domain. *Do not forget to specify the path (`login`).*
-    5. Fill in the other items.
+    3. Set `<custom domain>/login` as the application domain. *Do not forget to specify the path (`login`).*
+    4. Fill in the other items.
+    5. In the policy setting, you should set the session duration as `1 month`.
     6. Once the policy is created, copy the `Application Audience (AUD) Tag` in the Overview tab.
 4. Set environment variables.
     1. Once again, open [Workers & Pages](https://dash.cloudflare.com/?to=/:account/workers-and-pages).
@@ -62,11 +62,23 @@ Revoking a user's session from the [ZT Dashboard](https://one.dash.cloudflare.co
 
 You can flexibly restrict access by setting [Access policies](https://developers.cloudflare.com/cloudflare-one/policies/access/).
 
-<!--
 ### Authenticate within the system such as CI/CD
 
 You can use a [service token](https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/) that is independent of the personal account.
--->
+
+> Please remember to create different policies and set the `session duration` to a relatively short period of about 30 minutes when allow service tokens on the application. This is because JWT created by service tokens cannot be manually revoked. It's safer and more useful to generate JWT from the client id/secret of service tokens on CI/CD every time, as you can set a relatively long period (more than 1 year) for the `Service Token Duration` and can delete it at any time.
+
+For example, for GitHub Actions, you can add this step to generate a JWT.
+
+```yaml
+      - name: Create Turbo token
+        run: |
+          export TURBO_TOKEN=$(curl -H 'CF-Access-Client-Id: ${{ secrets.TURBO_CACHE_CLIENT_ID }}' \
+            -H 'CF-Access-Client-Secret: ${{ secrets.TURBO_CACHE_CLIENT_SECRET }}' \
+            -H 'Content-Type: text/plain' \
+            https://<custom domain>/login) && \
+          echo "TURBO_TOKEN=$TURBO_TOKEN" >> $GITHUB_ENV
+```
 
 ## Related cool projects
 

@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import type { Env } from "./lib/env";
 import { webRoute } from "./routes/web";
-import { restApiRoute } from "./routes/rest-api";
+import { turboRoute } from "./routes/turbo";
 
 const app = new Elysia({ aot: false })
   /*
@@ -14,7 +14,7 @@ const app = new Elysia({ aot: false })
     set.redirect = "/login";
   })
   .use(webRoute)
-  .use(restApiRoute);
+  .use(turboRoute);
 
 export default {
   fetch: (request: Request, env: Env) => {

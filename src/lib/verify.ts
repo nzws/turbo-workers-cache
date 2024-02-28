@@ -4,14 +4,14 @@ import type { Env } from "./env";
 // https://developers.cloudflare.com/cloudflare-one/identity/authorization-cookie/application-token/#payload
 export interface TokenPayload {
   aud: string[];
-  email: string;
+  email: string | undefined;
   exp: number;
   iat: number;
   nbf: number;
   iss: string;
   type: string;
   identity_nonce: string;
-  sub: string; // User ID
+  sub: string; // User ID (service token does not have)
   country: string;
 }
 
