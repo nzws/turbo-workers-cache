@@ -80,6 +80,12 @@ For example, for GitHub Actions, you can add this step to generate a JWT.
           echo "TURBO_TOKEN=$TURBO_TOKEN" >> $GITHUB_ENV
 ```
 
+### There is a cache file, but cache hit rate is low
+
+This is a guess from the behavior because there is no mention of this, but it seems that Turbo CLI queues cache downloads and skips them when the response from the API is slow.
+It is thought that if you perform a dry-run once, the queuing will be done first and the chance of a cache hit will increase.
+Run command like `yarn turbo lint --dry && yarn turbo lint` may cause dry-run overhead, but there is a possibility that the cache can be hit more appropriately.
+
 ## Related cool projects
 
 - https://github.com/AdiRishi/turborepo-remote-cache-cloudflare
