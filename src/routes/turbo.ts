@@ -177,8 +177,6 @@ export const turboRoute = new Elysia({ aot: false }).guard(
         async ({ slug, store, body }) => {
           const env = (store as Record<string, unknown>)["env"] as Env;
 
-          console.log(await env.BUCKET.list());
-
           const options: R2ListOptions = {
             limit: 1000,
             prefix: `${slug}/`,
